@@ -4,6 +4,8 @@ const replaceVariables = require("../utils/replaceVariables");
 const { generatePDF } = require("../services/pdfService");
 const { v4: uuidv4 } = require("uuid");
 
+const sendEmail = require("../services/emailService");
+
 // exports.generateDocument = async (req, res) => {
 
 //   try {
@@ -43,7 +45,7 @@ exports.generateDocument = async (req, res) => {
 
   try {
 
-    const { templateId, data } = req.body;
+    const { templateId, data, email } = req.body;
 
     const template = await Template.findById(templateId);
 
@@ -62,8 +64,16 @@ exports.generateDocument = async (req, res) => {
       publicId
     });
 
+    if (email){
+
+      await sendEmail(email, "Your Generated Document",
+        "Please find the attached PDF document.",
+        pdfPath
+      );
+    }
+
     res.json({
-      message: "PDF generated",
+      message: "PDF generated and email sent",
       document,
       shareLink: `/doc/${publicId}`
     });
