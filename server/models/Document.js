@@ -16,7 +16,12 @@ const documentSchema = new mongoose.Schema({
     type: Object
   },
 
-  pdfUrl: String
+  pdfUrl: String,
+
+  publicId:{
+    type:String,
+    unique:true,
+  }
 
 }, { timestamps: true });
 
