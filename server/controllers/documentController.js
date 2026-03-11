@@ -5,6 +5,7 @@ const { generatePDF } = require("../services/pdfService");
 const { v4: uuidv4 } = require("uuid");
 
 const sendEmail = require("../services/emailService");
+const path = require("path");
 
 // exports.generateDocument = async (req, res) => {
 
@@ -77,6 +78,30 @@ exports.generateDocument = async (req, res) => {
       document,
       shareLink: `/doc/${publicId}`
     });
+
+  } catch (error) {
+    res.status(500).json(error);
+  }
+
+};
+
+exports.downloadDocument = async (req, res) => {
+
+  try {
+
+    const document = await Document.findById(req.params.id);
+
+    if (!document) {
+      return res.status(404).json({ message: "Document not found" });
+    }
+
+    if (document.user.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+
+    const filePath = path.resolve(document.pdfUrl);
+
+    res.download(filePath);
 
   } catch (error) {
     res.status(500).json(error);
