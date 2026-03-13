@@ -12,7 +12,9 @@ const router = express.Router();
 
 const {
   generateDocument,
-  downloadDocument
+  downloadDocument,
+  migrateDocuments,
+  getUserDocuments
 } = require("../controllers/documentController");
 
 const authMiddleware = require("../middleware/authMiddleware");
@@ -20,5 +22,9 @@ const authMiddleware = require("../middleware/authMiddleware");
 router.post("/generate", authMiddleware, generateDocument);
 
 router.get("/download/:id", authMiddleware, downloadDocument);
+
+router.post("/migrate", authMiddleware, migrateDocuments);
+
+router.get("/my-documents", authMiddleware, getUserDocuments);
 
 module.exports = router;

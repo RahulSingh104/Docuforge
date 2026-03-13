@@ -5,14 +5,23 @@ require("dotenv").config();
 const connectDB = require("./config/db");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
-
+const seedTemplates = require("./utils/seedTemplates");
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100
 });
 
-connectDB();
+const otpLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 5, // only 5 OTP requests allowed
+  message: "Too many OTP requests, please try again later"
+});
+
+
+connectDB().then(()=>{
+seedTemplates();
+});
 
 const authRoutes = require("./routes/authRoutes");
 const documentRoutes = require("./routes/documentRoutes");
@@ -21,10 +30,18 @@ const publicRoutes = require("./routes/publicRoutes");
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:5173"],
+  credentials: true
+}));
 app.use(express.json());
 app.use(helmet());
 app.use(limiter);
+app.use("/api/auth/send-otp", otpLimiter);
+
+app.use("/generated-pdfs", express.static("generated-pdfs"));
+
+app.use("/generated", express.static("generated"));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/document", documentRoutes);

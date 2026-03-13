@@ -1,14 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const {body} = require("express-validator");
-const { registerUser, loginUser } = require("../controllers/authController");
+const {  loginUser ,verifyOtp,sendOtp} = require("../controllers/authController");
 
+ // Send OTP for registration
 router.post(
-  "/register",
+  "/send-otp",
   body("email").isEmail(),
   body("password").isLength({ min: 6 }),
-  registerUser
-);
+  sendOtp
+); 
+
 router.post("/login", loginUser);
+
+router.post("/verify-otp", verifyOtp);
+
 
 module.exports = router;

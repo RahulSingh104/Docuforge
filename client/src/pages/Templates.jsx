@@ -20,6 +20,12 @@ name:"Invoice"
 {
 id:"offer",
 name:"Offer Letter"
+},
+
+{
+id:"biodata",
+name:"Bio Data",
+icon:"📋"
 }
 
 ];
@@ -30,7 +36,7 @@ return(
 
 <Navbar/>
 
-<div className="p-10 grid grid-cols-3 gap-6">
+{/* <div className="p-10 grid grid-cols-3 gap-6">
 
 {templates.map((t)=>(
 
@@ -44,6 +50,24 @@ onClick={()=>navigate(`/builder/${t.id}`)}
 
 </div>
 
+))}
+
+</div> */}
+
+<div className="grid grid-cols-3 gap-6">
+
+{templates.map((template)=>(
+<div
+key={template.id}
+className="bg-white shadow p-6 rounded cursor-pointer hover:shadow-lg"
+onClick={()=>navigate(`/builder/${template.id}`)}
+>
+
+<h3 className="text-xl font-semibold">
+{template.icon} {template.name}
+</h3>
+
+</div>
 ))}
 
 </div>

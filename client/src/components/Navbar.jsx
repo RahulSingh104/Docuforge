@@ -24,20 +24,7 @@ DocuForge
 
 <div className="flex gap-6 items-center">
 
-{/* Public Links */}
-
-<Link to="/" className="hover:text-gray-300">
-Home
-</Link>
-
-<Link to="/features" className="hover:text-gray-300">
-Features
-</Link>
-
-{/* If user logged in */}
-
 {isLoggedIn && (
-
 <>
 <Link to="/dashboard" className="hover:text-gray-300">
 Dashboard
@@ -51,6 +38,11 @@ Templates
 My Documents
 </Link>
 
+<Link to="/bulk-generate" className="hover:text-gray-300">
+Bulk Generator
+</Link>
+
+
 <button
 onClick={logout}
 className="bg-red-500 px-3 py-1 rounded hover:bg-red-600"
@@ -58,13 +50,9 @@ className="bg-red-500 px-3 py-1 rounded hover:bg-red-600"
 Logout
 </button>
 </>
-
 )}
 
-{/* If user NOT logged in */}
-
 {!isLoggedIn && (
-
 <>
 <Link
 to="/login"
@@ -79,8 +67,8 @@ className="bg-green-500 px-3 py-1 rounded hover:bg-green-600"
 >
 Register
 </Link>
-</>
 
+</>
 )}
 
 </div>
