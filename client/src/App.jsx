@@ -8,6 +8,7 @@ import Builder from "./pages/Builder";
 import Documents from "./pages/Documents";
 import BulkGenerator from "./pages/BulkGenerator";
 import VerifyOTP from "./pages/VerifyOTP";
+import AITemplate from "./pages/AITemplate";
 
 function App() {
   return (
@@ -35,7 +36,8 @@ function App() {
         
         <Route path="/verify-otp" element={<VerifyOTP />} />
 
-
+        <Route path="/ai-template" element={<AITemplate />} />
+        
       </Routes>
     </BrowserRouter>
   );

@@ -27,6 +27,10 @@ const authRoutes = require("./routes/authRoutes");
 const documentRoutes = require("./routes/documentRoutes");
 const bulkRoutes = require("./routes/bulkRoutes");
 const publicRoutes = require("./routes/publicRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
+const templateRoutes = require("./routes/templateRoutes");
+const aiRoutes = require("./routes/aiRoutes");
+const aiTemplateRoutes = require("./routes/aiTemplateRoutes");
 
 const app = express();
 
@@ -47,7 +51,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api/document", documentRoutes);
 app.use("/api/bulk", bulkRoutes);
 app.use("/api/public", publicRoutes);
-
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/templates", templateRoutes);
+app.use("/api/ai", aiRoutes);
+app.use("/api/ai", aiTemplateRoutes);
 app.get("/", (req, res) => {
   res.send("DocuForge API Running");
 });
