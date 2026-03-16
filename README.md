@@ -1,46 +1,118 @@
-# DocuForge – Dynamic PDF Generation Platform
+# DocuForge – AI Powered Dynamic PDF Generation Platform
 
-DocuForge is a full-stack web application that allows users to generate dynamic PDF documents from customizable HTML templates.
-It supports bulk PDF generation, secure document sharing, and automated email delivery.
+DocuForge is a **full-stack document automation platform** that allows users to generate professional PDF documents using customizable templates.
 
-This project demonstrates a production-style architecture using Node.js, Express, MongoDB, Puppeteer, and React.
+The system supports **AI-powered template generation, dynamic PDF creation, bulk document generation, secure authentication, and public document sharing**.
+
+The project demonstrates a **production-ready architecture** using:
+
+Node.js • Express • MongoDB • React • Puppeteer • JWT Authentication
 
 ---
 
-## 🚀 Features
+# 🚀 Features
 
-### Authentication
+## 🔐 Authentication System
 
 * Secure user registration and login
+* Email OTP verification system
 * Password hashing using bcrypt
 * JWT-based authentication
 * Protected API routes
+* Session based access control
 
-### Dynamic PDF Generation
+### OTP Security
 
-* Convert HTML templates into PDFs using Puppeteer
-* Replace template variables dynamically
-* Generate professional documents like:
+* 6-digit OTP verification
+* OTP expiration system
+* Fallback OTP system if email service fails
+* Development mode OTP display
 
-  * Certificates
-  * Invoices
-  * Offer Letters
-  * Reports
+---
 
-### Bulk PDF Generation
+# 🤖 AI Features
 
-* Upload CSV file
-* Generate hundreds of PDFs automatically
-* Useful for:
+## AI Template Generator
 
-  * School certificates
-  * Event participation certificates
-  * Company offer letters
+Users can generate **new document templates using AI prompts**.
 
-### Public Document Sharing
+Example prompt:
 
-* Share documents using public links
-* Anyone can verify or download shared documents
+```
+Create a professional internship certificate template with placeholders:
+{{name}}, {{company}}, {{duration}}, {{date}}
+```
+
+AI automatically generates:
+
+* Template structure
+* Required fields
+* HTML document layout
+
+---
+
+## AI Content Generator
+
+Generate professional content for documents automatically.
+
+Examples:
+
+* Certificate description
+* Offer letter content
+* Invoice notes
+* Professional summaries
+
+AI content appears in **live preview before PDF generation**.
+
+---
+
+# 📄 Dynamic PDF Generation
+
+DocuForge converts HTML templates into PDFs using **Puppeteer**.
+
+Features:
+
+* Dynamic variable replacement
+* Live preview system
+* High-quality PDF output
+* Custom document templates
+
+Supported document types:
+
+* Certificates
+* Invoices
+* Offer Letters
+* Biodata / Resume
+* AI Generated Templates
+
+---
+
+# 📦 Bulk Document Generation
+
+Generate hundreds of PDFs instantly using CSV uploads.
+
+Use cases:
+
+* School certificates
+* Event participation certificates
+* HR onboarding letters
+* Bulk invoice generation
+
+Workflow:
+
+```
+Upload CSV
+↓
+Parse data
+↓
+Generate PDFs automatically
+```
+
+---
+
+# 🌐 Public Document Verification
+
+Documents can be shared with a **public verification link**.
 
 Example:
 
@@ -48,128 +120,170 @@ Example:
 /api/public/doc/:id
 ```
 
-### Email Delivery
+Anyone with the link can verify or download the document.
 
-* Automatically send generated PDFs via email
-* Attach generated document to email
+Useful for:
 
-### Secure PDF Access
+* Certificate verification
+* Offer letter validation
+* Public document sharing
 
-* Authenticated download routes
-* Users can only access their own documents
+---
 
-### Security
+# 📧 Email Delivery System
+
+Generated documents can be emailed automatically.
+
+Features:
+
+* PDF attachment support
+* Nodemailer SMTP integration
+* Development fallback OTP system
+* Production-ready email architecture
+
+---
+
+# 📊 Dynamic Dashboard
+
+User dashboard provides:
+
+* Total templates available
+* Generated document count
+* Bulk job statistics
+* Quick template access
+
+Templates are loaded **dynamically from database**.
+
+---
+
+# 🔒 Security Features
 
 * JWT authentication
+* Protected API routes
+* Password hashing with bcrypt
+* Rate limiting
 * Helmet security headers
-* API rate limiting
-* Password hashing
+* Secure file handling
 * Input validation
 
 ---
 
-## 🧰 Tech Stack
+# 🧰 Tech Stack
 
-### Backend
+## Backend
 
 * Node.js
 * Express.js
-* MongoDB + Mongoose
+* MongoDB
+* Mongoose
 * Puppeteer
 * Nodemailer
 * JWT Authentication
-
-### Security
-
-* Helmet
-* Express Rate Limit
 * bcryptjs
 
-### Utilities
+## AI Logic
 
-* UUID
-* dotenv
+* AI Template Generator
+* AI Content Generator
+* Prompt-based template creation
 
-### Future Frontend
+## Frontend
 
 * React
+* Vite
 * TailwindCSS
-* Shadcn UI
 * Axios
+* React Router
 
 ---
 
-## 📂 Project Structure
+# 📂 Project Structure
 
 ```
 docuforge
 │
 ├── server
+│
 │   ├── config
 │   │   └── db.js
-│   │
+│
 │   ├── controllers
 │   │   ├── authController.js
 │   │   ├── documentController.js
-│   │   └── bulkController.js
-│   │
+│   │   ├── aiController.js
+│   │   └── aiTemplateController.js
+│
 │   ├── middleware
 │   │   ├── authMiddleware.js
 │   │   └── uploadMiddleware.js
-│   │
+│
 │   ├── models
 │   │   ├── User.js
 │   │   ├── Template.js
 │   │   └── Document.js
-│   │
+│
 │   ├── routes
 │   │   ├── authRoutes.js
 │   │   ├── documentRoutes.js
 │   │   ├── bulkRoutes.js
+│   │   ├── aiRoutes.js
 │   │   └── publicRoutes.js
-│   │
+│
 │   ├── services
 │   │   ├── pdfService.js
-│   │   └── emailService.js
-│   │
-│   ├── templates
-│   │
+│   │   ├── emailService.js
+│   │   └── aiTemplateService.js
+│
 │   ├── utils
-│   │   └── replaceVariables.js
-│   │
+│   │   ├── replaceVariables.js
+│   │   └── otpStore.js
+│
 │   ├── generated-pdfs
-│   │
+│
 │   ├── server.js
 │   └── .env
 │
-└── client (React frontend - upcoming)
+└── client
+    ├── src
+    │   ├── pages
+    │   │   ├── Dashboard.jsx
+    │   │   ├── Builder.jsx
+    │   │   ├── AITemplate.jsx
+    │   │   └── Register.jsx
+    │   │
+    │   ├── components
+    │   │   └── Navbar.jsx
+    │   │
+    │   ├── services
+    │   │   └── api.js
+    │
+    └── vite.config.js
 ```
 
 ---
 
-## ⚙️ Installation
+# ⚙️ Installation
 
-### 1. Clone the repository
+## Clone Repository
 
 ```
 git clone https://github.com/yourusername/docuforge.git
 ```
 
-### 2. Navigate to server folder
+---
+
+## Install Backend
 
 ```
-cd docuforge/server
-```
-
-### 3. Install dependencies
-
-```
+cd server
 npm install
 ```
 
-### 4. Create environment variables
+---
 
-Create `.env` file:
+## Environment Variables
+
+Create `.env`
 
 ```
 PORT=5000
@@ -180,47 +294,56 @@ EMAIL=your_email
 APP_PASSWORD=your_email_app_password
 ```
 
-### 5. Run development server
+---
+
+## Run Development Server
 
 ```
 npm run dev
 ```
 
-### 6. Run production server
+---
+
+# 📡 API Endpoints
+
+## Authentication
 
 ```
-npm start
+POST /api/auth/send-otp
+POST /api/auth/verify-otp
+POST /api/auth/login
 ```
 
 ---
 
-## 📡 Example API Endpoints
-
-### Register User
+## AI Features
 
 ```
-POST /api/auth/register
+POST /api/ai/generate
+POST /api/ai/template
 ```
 
-### Login User
+---
 
-```
-POST /api/auth/login
-```
-
-### Generate PDF
+## Document Generation
 
 ```
 POST /api/document/generate
-```
-
-### Bulk PDF Generation
-
-```
 POST /api/bulk/generate
 ```
 
-### Public Document Access
+---
+
+## Templates
+
+```
+GET /api/templates/all
+GET /api/public/template/:name
+```
+
+---
+
+## Public Access
 
 ```
 GET /api/public/doc/:id
@@ -228,48 +351,37 @@ GET /api/public/doc/:id
 
 ---
 
-## 🔐 Security Features
+# 🛣 Future Roadmap
 
-* JWT Authentication
-* Protected API routes
-* Secure password hashing
-* Rate limiting
-* Helmet security headers
+Upcoming features planned for DocuForge.
+
+### Drag and Drop Template Builder
+
+Users will design document templates visually like **Canva**.
 
 ---
 
-## 🛣 Future Roadmap
+### Live Document Designer
 
-Planned features for future updates:
+Create templates using UI instead of HTML.
 
-### Frontend Dashboard
-
-* React-based user dashboard
-* Template selection UI
-* Document preview
-
-### Drag-and-Drop Template Builder
-
-Users can design document templates visually like Canva.
-
-### Live Document Preview
-
-Preview document before generating PDF.
+---
 
 ### Cloud Storage Integration
 
 Store PDFs using:
 
-* Cloudinary
 * AWS S3
+* Cloudinary
+* Google Cloud Storage
 
-### Email Service Upgrade
+---
 
-Replace SMTP with email APIs for scalability.
+### Template Marketplace
 
-### Document Verification System
+Users can publish and share their templates.
 
-Allow organizations to verify certificates publicly.
+---
 
 ### Analytics Dashboard
 
@@ -279,29 +391,33 @@ Track:
 * Downloads
 * Popular templates
 
-### Multi-template Marketplace
+---
 
-Users can upload and share templates.
+### Organization Verification System
+
+Allow companies or universities to verify documents publicly.
 
 ---
 
-## 📌 Use Cases
+# 📌 Use Cases
 
-* Education certificate generation
+* Certificate generation systems
+* School and university document automation
 * Event participation certificates
 * Invoice generation
-* HR offer letters
-* Automated document workflows
+* HR offer letter automation
+* Bulk document generation
 
 ---
 
-## 👨‍💻 Author
+# 👨‍💻 Author
 
 Rahul Kumar
 B.Tech Computer Engineering Student
+MERN Stack Developer
 
 ---
 
-## 📜 License
+# 📜 License
 
 This project is licensed under the MIT License.

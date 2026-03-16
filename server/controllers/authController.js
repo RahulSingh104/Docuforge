@@ -103,16 +103,28 @@ otp,
 expires:Date.now()+5*60*1000
 });
 
-// await sendEmail(
-// email,
-// "DocuForge OTP Verification",
-// `Your OTP is ${otp}`
-// );
+let otpSent = false;
 
+try{
+
+await sendEmail(
+email,
+"DocuForge OTP Verification",
+`Your OTP is ${otp}`
+);
+
+otpSent = true;
+
+}catch(err){
+
+console.log("Email sending failed, using fallback OTP");
 console.log("OTP:", otp);
 
+}
+
 res.json({
-message:"OTP sent to email"
+message:"OTP generated",
+otpFallback: otpSent ? null : otp
 });
 
 }catch(err){

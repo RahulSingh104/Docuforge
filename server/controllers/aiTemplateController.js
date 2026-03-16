@@ -54,7 +54,8 @@ let name = prompt
 const template = await Template.create({
 name,
 fields: uniqueFields,
-html
+html,
+createdBy: req.user._id
 });
 
 res.json({

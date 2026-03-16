@@ -588,6 +588,10 @@ try{
 
 const token = localStorage.getItem("token");
 
+if(!token){
+  return;
+}
+
 const res = await API.get("/templates/all",{
  headers:{Authorization:`Bearer ${token}`}
 });
