@@ -36,7 +36,7 @@ const app = express();
 
 app.use(cors({
   origin: ["http://localhost:5173",
-    "https://docuforge-one.vercel.app/"
+    "https://docuforge-one.vercel.app"
   ],
   credentials: true
 }));
