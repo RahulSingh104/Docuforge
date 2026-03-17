@@ -34,16 +34,33 @@ const aiTemplateRoutes = require("./routes/aiTemplateRoutes");
 
 const app = express();
 
-app.use(cors({
-  origin: ["http://localhost:5173",
+// app.use(cors({
+//   origin: ["http://localhost:5173",
+//     "https://docuforge-one.vercel.app"
+//   ],
+//   credentials: true
+// }));
+
+
+const corsOptions = {
+  origin: [
+    "http://localhost:5173",
     "https://docuforge-one.vercel.app"
   ],
+  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
+  allowedHeaders: ["Content-Type","Authorization"],
   credentials: true
-}));
+};
+
+app.use(cors(corsOptions));
+
+/* VERY IMPORTANT: handle preflight */
+app.options("*", cors(corsOptions));
+
 app.use(express.json());
 app.use(helmet());
 app.use(limiter);
-app.use("/api/auth/send-otp", otpLimiter);
+
 
 app.use("/generated-pdfs", express.static("generated-pdfs"));
 
