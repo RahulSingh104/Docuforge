@@ -43,12 +43,27 @@ const app = express();
 
 
 const corsOptions = {
-  origin: [
-    "http://localhost:5173",
-    "https://docuforge-one.vercel.app"
-  ],
-  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
-  allowedHeaders: ["Content-Type","Authorization"],
+  origin: function (origin, callback) {
+
+    // allow requests with no origin (mobile apps / postman)
+    if (!origin) return callback(null, true);
+
+    // allow localhost
+    if (origin.includes("localhost")) {
+      return callback(null, true);
+    }
+
+    // allow all vercel domains
+    if (origin.includes("vercel.app")) {
+      return callback(null, true);
+    }
+
+    // otherwise block
+    return callback(new Error("CORS not allowed"), false);
+  },
+
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 };
 
