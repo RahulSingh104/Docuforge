@@ -54,8 +54,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-/* VERY IMPORTANT: handle preflight */
-app.options("*", cors(corsOptions));
+
 
 app.use(express.json());
 app.use(helmet());
