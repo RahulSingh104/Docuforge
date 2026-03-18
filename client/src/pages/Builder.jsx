@@ -99,6 +99,11 @@ try {
 
 const token = localStorage.getItem("token");
 
+console.log("📤 Sending request:", {
+  templateId,
+  data: formData
+});
+
 const res = await API.post(
 "/document/generate",
 {
@@ -115,11 +120,15 @@ Authorization: `Bearer ${token}`
 }
 );
 
+
+
 alert("PDF Generated Successfully");
 
 setDownloadUrl(
 `${import.meta.env.VITE_API_URL.replace("/api","")}/${res.data.document.pdfUrl}`
 );
+
+
 
 } catch (err) {
 

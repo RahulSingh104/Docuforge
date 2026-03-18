@@ -47,6 +47,8 @@ const browser = await puppeteer.launch({
   headless: true
 });
 
+console.log("Puppeteer starting....");
+
 const page = await browser.newPage();
 
 await page.setContent(html, { waitUntil: "networkidle0" });
@@ -56,12 +58,19 @@ await page.pdf({
   format: "A4"
 });
 
-await browser.close();
+
+await browser.close(); 
+
+
 
 return filePath;
 
 }catch(err){
 console.log("PDF ERROR:", err);
+console.log("Error details:", {
+message: err.message,
+stack: err.stack
+});
 throw err;
 }
 

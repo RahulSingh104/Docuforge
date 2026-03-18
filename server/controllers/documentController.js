@@ -9,13 +9,17 @@ const path = require("path");
 const puppeteer = require("puppeteer");
 const fs = require("fs");
 
-
 exports.generateDocument = async (req, res) => {
   try {
     const { templateId, data, email } = req.body;
 
+    console.log("API HIT:/document/generate");
+    console.log("request Body:",req.body);
+
     // FIX 1: find template correctly
     const template = await Template.findOne({ name: templateId });
+
+     console.log("📥 Incoming Data:", data);
 
     if (!template) {
       return res.status(404).json({ message: "Template not found" });
@@ -24,21 +28,30 @@ exports.generateDocument = async (req, res) => {
     console.log("templateId:", templateId);
     console.log("template:", template);
 
+   
+
     const html = replaceVariables(template.html, data);
+    console.log("HTML preview:",html.substring(0, 200)); // log first 500 chars of HTML for debugging
 
-    const filename = `${uuidv4()}.pdf`;
+    console.log(" Generating PDF ....");
 
-const outputDir = path.join(__dirname, "../generated-pdfs");
+    
 
-if(!fs.existsSync(outputDir)){
-  fs.mkdirSync(outputDir, { recursive: true });
-}
+    const outputDir = path.join(__dirname, "../generated-pdfs");
 
-const fileName = `${uuidv4()}`;
+    if (!fs.existsSync(outputDir)) {
+      fs.mkdirSync(outputDir, { recursive: true });
+    }
 
-const pdfpath = await generatePDF(html, fileName);
+    const fileName =uuidv4();
 
-const pdfUrl = `generated-pdfs/${fileName}.pdf`;
+    const pdfPath = await generatePDF(html, fileName);
+
+    console.log(" PDF generated at:", pdfPath);
+
+    console.log("Sending respone to frontend");
+
+    const pdfUrl = `generated-pdfs/${fileName}.pdf`;
 
     const publicId = uuidv4();
 
@@ -67,6 +80,7 @@ const pdfUrl = `generated-pdfs/${fileName}.pdf`;
   } catch (error) {
     // FIX 3: better error logging
     console.error("PDF generation error:", error);
+    
 
     res.status(500).json({
       message: "PDF generation failed",
