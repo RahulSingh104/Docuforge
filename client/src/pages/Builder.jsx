@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import API from "../services/api";
+import { set } from "mongoose";
 
 function Builder() {
 
@@ -124,9 +125,12 @@ Authorization: `Bearer ${token}`
 
 alert("PDF Generated Successfully");
 
-setDownloadUrl(
-`${import.meta.env.VITE_API_URL.replace("/api","")}/${res.data.document.pdfUrl}`
-);
+// setDownloadUrl(
+// `${import.meta.env.VITE_API_URL.replace("/api","")}/${res.data.document.pdfUrl}`
+// );
+
+setDownloadUrl(res.data.document.pdfUrl);
+
 
 
 

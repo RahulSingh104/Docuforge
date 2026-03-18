@@ -23,55 +23,87 @@
 // };
 
 
+// const puppeteer = require("puppeteer");
+// const fs = require("fs");
+// const path = require("path");
+
+// exports.generatePDF = async (html, fileName) => {
+
+// try{
+
+// // ✅ correct folder path
+// const dir = path.join(__dirname, "../generated-pdfs");
+
+// // ✅ create folder if not exists
+// if (!fs.existsSync(dir)) {
+//   fs.mkdirSync(dir, { recursive: true });
+// }
+
+// // ✅ correct file path
+// const filePath = path.join(dir, `${fileName}.pdf`);
+
+// const browser = await puppeteer.launch({
+//   args: ["--no-sandbox", "--disable-setuid-sandbox"],
+//   headless: true
+// });
+
+// console.log("Puppeteer starting....");
+
+// const page = await browser.newPage();
+
+// await page.setContent(html, { waitUntil: "networkidle0" });
+
+// await page.pdf({
+//   path: filePath,
+//   format: "A4"
+// });
+
+
+// await browser.close(); 
+
+
+
+// return filePath;
+
+// }catch(err){
+// console.log("PDF ERROR:", err);
+// console.log("Error details:", {
+// message: err.message,
+// stack: err.stack
+// });
+// throw err;
+// }
+
+// };
+
+
+
+
+
 const puppeteer = require("puppeteer");
-const fs = require("fs");
-const path = require("path");
 
-exports.generatePDF = async (html, fileName) => {
+exports.generatePDF = async (html) => {
+  try {
 
-try{
+    const browser = await puppeteer.launch({
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      headless: true
+    });
 
-// ✅ correct folder path
-const dir = path.join(__dirname, "../generated-pdfs");
+    const page = await browser.newPage();
 
-// ✅ create folder if not exists
-if (!fs.existsSync(dir)) {
-  fs.mkdirSync(dir, { recursive: true });
-}
+    await page.setContent(html, { waitUntil: "networkidle0" });
 
-// ✅ correct file path
-const filePath = path.join(dir, `${fileName}.pdf`);
+    const pdfBuffer = await page.pdf({
+      format: "A4"
+    });
 
-const browser = await puppeteer.launch({
-  args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  headless: true
-});
+    await browser.close();
 
-console.log("Puppeteer starting....");
+    return pdfBuffer;
 
-const page = await browser.newPage();
-
-await page.setContent(html, { waitUntil: "networkidle0" });
-
-await page.pdf({
-  path: filePath,
-  format: "A4"
-});
-
-
-await browser.close(); 
-
-
-
-return filePath;
-
-}catch(err){
-console.log("PDF ERROR:", err);
-console.log("Error details:", {
-message: err.message,
-stack: err.stack
-});
-throw err;
-}
-
+  } catch (err) {
+    console.log("PDF ERROR:", err);
+    throw err;
+  }
 };
