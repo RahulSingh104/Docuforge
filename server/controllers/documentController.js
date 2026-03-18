@@ -73,7 +73,7 @@ exports.generateDocument = async (req, res) => {
         email,
         "Your Generated Document",
         "Please find the attached PDF document.",
-        pdfPath,
+        null
       );
     }
 

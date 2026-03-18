@@ -62,7 +62,7 @@ Document
 
 <a
 // href={`${import.meta.env.VITE_API_URL.replace("/api","")}/${doc.pdfUrl}`}
-href={`http://localhost:5000/${doc.pdfUrl}`}
+href={doc.pdfUrl}
 target="_blank"
 className="text-blue-500 block mt-3"
 >

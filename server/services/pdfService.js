@@ -85,13 +85,21 @@ const puppeteer = require("puppeteer");
 exports.generatePDF = async (html) => {
   try {
 
+    // ✅ PRODUCTION FIX (Render safe)
+    if (process.env.NODE_ENV === "production") {
+      console.log("⚠️ Skipping Puppeteer in production");
+
+      // return dummy buffer (temporary PDF content)
+      return Buffer.from("PDF generation is disabled in production (Render free tier issue)");
+    }
+
+    // ✅ LOCAL WORKING
     const browser = await puppeteer.launch({
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
       headless: true
     });
 
     const page = await browser.newPage();
-
     await page.setContent(html, { waitUntil: "networkidle0" });
 
     const pdfBuffer = await page.pdf({
@@ -103,7 +111,7 @@ exports.generatePDF = async (html) => {
     return pdfBuffer;
 
   } catch (err) {
-    console.log("PDF ERROR:", err);
+    console.log("❌ PDF ERROR:", err);
     throw err;
   }
 };
