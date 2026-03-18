@@ -1,53 +1,68 @@
 // const puppeteer = require("puppeteer");
-// const fs = require("fs");
-// const path = require("path");
 
-// exports.generatePDF = async (html, filename) => {
+// exports.generatePDF = async (html, filePath) => {
 
-//   const dirPath = path.join(__dirname, "../generated-pdfs");
+// const browser = await puppeteer.launch({
+//     args: ['--no-sandbox', '--disable-setuid-sandbox'],
+//     headless: true
+// });
 
-//   // create folder if not exists
-//   if (!fs.existsSync(dirPath)) {
-//     fs.mkdirSync(dirPath);
-//   }
+// const page = await browser.newPage();
 
-//   const browser = await puppeteer.launch();
-//   const page = await browser.newPage();
+// await page.setContent(html);
 
-//   await page.setContent(html);
+// await page.pdf({
+// path: filePath,
+// format: "A4"
+// });
 
-//   const filePath = path.join(dirPath, filename);
+// await browser.close();
 
-//   await page.pdf({
-//     path: filePath,
-//     format: "A4",
-//     printBackground: true
-//   });
+// return filePath;
 
-//   await browser.close();
-
-//   return filePath;
 // };
 
-const puppeteer = require("puppeteer");
 
-exports.generatePDF = async (html, filePath) => {
+const puppeteer = require("puppeteer");
+const fs = require("fs");
+const path = require("path");
+
+exports.generatePDF = async (html, fileName) => {
+
+try{
+
+// ✅ correct folder path
+const dir = path.join(__dirname, "../generated-pdfs");
+
+// ✅ create folder if not exists
+if (!fs.existsSync(dir)) {
+  fs.mkdirSync(dir, { recursive: true });
+}
+
+// ✅ correct file path
+const filePath = path.join(dir, `${fileName}.pdf`);
 
 const browser = await puppeteer.launch({
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  headless: true
 });
 
 const page = await browser.newPage();
 
-await page.setContent(html);
+await page.setContent(html, { waitUntil: "networkidle0" });
 
 await page.pdf({
-path: filePath,
-format: "A4"
+  path: filePath,
+  format: "A4"
 });
 
 await browser.close();
 
 return filePath;
+
+}catch(err){
+console.log("PDF ERROR:", err);
+throw err;
+}
 
 };

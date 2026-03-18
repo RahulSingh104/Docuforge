@@ -6,6 +6,7 @@ const connectDB = require("./config/db");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const seedTemplates = require("./utils/seedTemplates");
+const path = require("path");
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -74,9 +75,11 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(helmet());
 app.use(limiter);
+  
 
-
-app.use("/generated-pdfs", express.static("generated-pdfs"));
+app.use("/generated-pdfs", express.static(
+  path.join(__dirname, "generated-pdfs")
+));
 
 app.use("/generated", express.static("generated"));
 

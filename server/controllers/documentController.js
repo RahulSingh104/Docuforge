@@ -9,49 +9,6 @@ const path = require("path");
 const puppeteer = require("puppeteer");
 const fs = require("fs");
 
-// exports.generateDocument = async (req, res) => {
-//   try {
-//     const { templateId, data, email } = req.body;
-
-//     const template = await Template.findById({ name: templateId });
-
-//     if (!template) {
-//       return res.status(404).json({ message: "Template not found" });
-//     }
-
-//     const html = replaceVariables(template.html, data);
-
-//     const filename = `${uuidv4()}.pdf`;
-
-//     const pdfPath = await generatePDF(html, filename);
-
-//     const publicId = uuidv4();
-
-//     const document = await Document.create({
-//       template: templateId,
-//       data,
-//       pdfUrl: pdfPath,
-//       publicId,
-//     });
-
-//     if (email) {
-//       await sendEmail(
-//         email,
-//         "Your Generated Document",
-//         "Please find the attached PDF document.",
-//         pdfPath,
-//       );
-//     }
-
-//     res.json({
-//       message: "PDF generated and email sent",
-//       document,
-//       shareLink: `/doc/${publicId}`,
-//     });
-//   } catch (error) {
-//     res.status(500).json(error);
-//   }
-// };
 
 exports.generateDocument = async (req, res) => {
   try {
@@ -71,21 +28,17 @@ exports.generateDocument = async (req, res) => {
 
     const filename = `${uuidv4()}.pdf`;
 
-    // FIX 2: ensure pdf folder exists
-    const outputDir = path.join(__dirname, "../generated");
+const outputDir = path.join(__dirname, "../generated-pdfs");
 
-    if (!fs.existsSync(outputDir)) {
-      fs.mkdirSync(outputDir, { recursive: true });
-    }
+if(!fs.existsSync(outputDir)){
+  fs.mkdirSync(outputDir, { recursive: true });
+}
 
-    const fileName = `${uuidv4()}.pdf`;
+const fileName = `${uuidv4()}`;
 
-    const fullPath = path.join(__dirname, "../generated-pdfs", fileName);
+const pdfpath = await generatePDF(html, fileName);
 
-    await generatePDF(html, fullPath);
-
-    // This is the URL path stored in DB
-    const pdfUrl = `generated-pdfs/${fileName}`;
+const pdfUrl = `generated-pdfs/${fileName}.pdf`;
 
     const publicId = uuidv4();
 
